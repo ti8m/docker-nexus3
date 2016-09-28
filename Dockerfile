@@ -1,53 +1,50 @@
-FROM       centos:centos7
+FROM       registry.access.redhat.com/rhel7/rhel
 MAINTAINER Sonatype <cloud-ops@sonatype.com>
 
+EXPOSE 8081
+
 ENV NEXUS_DATA /nexus-data
+ENV REPOSITORIES /repositories
+ENV NEXUS_HOME /opt/sonatype/nexus
 
 ENV NEXUS_VERSION 3.0.2-02
 
-ENV JAVA_HOME /opt/java
-ENV JAVA_VERSION_MAJOR 8
-ENV JAVA_VERSION_MINOR 102
-ENV JAVA_VERSION_BUILD 14
-
-RUN yum install -y \
-  curl tar \
+# Run Yum Update
+RUN yum install -y java-1.8.0-openjdk-devel tar  \
   && yum clean all
 
-# install Oracle JRE
-RUN mkdir -p /opt \
-  && curl --fail --silent --location --retry 3 \
-  --header "Cookie: oraclelicense=accept-securebackup-cookie; " \
-  http://download.oracle.com/otn-pub/java/jdk/${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-b${JAVA_VERSION_BUILD}/server-jre-${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-linux-x64.tar.gz \
-  | gunzip \
-  | tar -x -C /opt \
-  && ln -s /opt/jdk1.${JAVA_VERSION_MAJOR}.0_${JAVA_VERSION_MINOR} ${JAVA_HOME}
-
 # install nexus
-RUN mkdir -p /opt/sonatype/nexus \
+RUN mkdir -p ${NEXUS_HOME} \
   && curl --fail --silent --location --retry 3 \
     https://download.sonatype.com/nexus/3/nexus-${NEXUS_VERSION}-unix.tar.gz \
   | gunzip \
-  | tar x -C /opt/sonatype/nexus --strip-components=1 nexus-${NEXUS_VERSION} \
-  && chown -R root:root /opt/sonatype/nexus 
+  | tar x -C ${NEXUS_HOME} --strip-components=1 nexus-${NEXUS_VERSION} \
+  && chown -R root:root ${NEXUS_HOME}
 
 ## configure nexus runtime env
 RUN sed \
-    -e "s|karaf.home=.|karaf.home=/opt/sonatype/nexus|g" \
-    -e "s|karaf.base=.|karaf.base=/opt/sonatype/nexus|g" \
-    -e "s|karaf.etc=etc|karaf.etc=/opt/sonatype/nexus/etc|g" \
-    -e "s|java.util.logging.config.file=etc|java.util.logging.config.file=/opt/sonatype/nexus/etc|g" \
+    -e "s|karaf.home=.|karaf.home=${NEXUS_HOME}|g" \
+    -e "s|karaf.base=.|karaf.base=${NEXUS_HOME}|g" \
+    -e "s|karaf.etc=etc|karaf.etc=${NEXUS_HOME}/etc|g" \
+    -e "s|java.util.logging.config.file=etc|java.util.logging.config.file=${NEXUS_HOME}/etc|g" \
     -e "s|karaf.data=data|karaf.data=${NEXUS_DATA}|g" \
     -e "s|java.io.tmpdir=data/tmp|java.io.tmpdir=${NEXUS_DATA}/tmp|g" \
-    -i /opt/sonatype/nexus/bin/nexus.vmoptions
+    -i ${NEXUS_HOME}/bin/nexus.vmoptions
 
 RUN useradd -r -u 200 -m -c "nexus role account" -d ${NEXUS_DATA} -s /bin/false nexus
 
-VOLUME ${NEXUS_DATA}
+COPY scripts/fix-permissions.sh /usr/local/bin/
 
-EXPOSE 8081
+RUN chmod 755 /usr/local/bin/fix-permissions.sh \
+  && /usr/local/bin/fix-permissions.sh /opt/sonatype \
+  && /usr/local/bin/fix-permissions.sh $REPOSITORIES \
+  && /usr/local/bin/fix-permissions.sh $NEXUS_HOME/conf
+
+VOLUME ${NEXUS_DATA}
+VOLUME ${REPOSITORIES}
+
 USER nexus
-WORKDIR /opt/sonatype/nexus
+WORKDIR $NEXUS_HOME
 
 ENV JAVA_MAX_MEM 1200m
 ENV JAVA_MIN_MEM 1200m
