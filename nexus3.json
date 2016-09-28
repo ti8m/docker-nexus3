@@ -12,24 +12,6 @@
             "name": "nexus3"
          },
          "spec": {
-            "triggers": [
-               {
-                  "type": "GitHub",
-                  "github": {
-                     "secret": "secret"
-                  }
-               },
-               {
-                  "type": "Generic",
-                  "generic": {
-                     "secret": "secret"
-                  }
-               },
-               {
-                  "type": "ImageChange",
-                  "imageChange": {}
-               }
-            ],
             "source": {
                "type": "Git",
                "git": {
@@ -153,21 +135,6 @@
                      "post": {},
                      "resources": {}
                   },
-                  "triggers": [
-                     {
-                        "type": "ImageChange",
-                        "imageChangeParams": {
-                           "automatic": true,
-                           "containerNames": [
-                              "${APPLICATION_NAME}"
-                           ],
-                           "from": {
-                              "kind": "ImageStreamTag",
-                              "name": "${APPLICATION_NAME}:latest"
-                           }
-                        }
-                     }
-                  ],
                   "replicas": 1,
                   "selector": {
                      "deploymentconfig": "${APPLICATION_NAME}"
