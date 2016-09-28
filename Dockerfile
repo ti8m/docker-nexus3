@@ -4,7 +4,6 @@ MAINTAINER Sonatype <cloud-ops@sonatype.com>
 EXPOSE 8081
 
 ENV NEXUS_DATA /nexus-data
-ENV REPOSITORIES /repositories
 ENV NEXUS_HOME /opt/sonatype/nexus
 
 ENV NEXUS_VERSION 3.0.2-02
@@ -37,11 +36,9 @@ COPY scripts/fix-permissions.sh /usr/local/bin/
 
 RUN chmod 755 /usr/local/bin/fix-permissions.sh \
   && /usr/local/bin/fix-permissions.sh /opt/sonatype \
-  && /usr/local/bin/fix-permissions.sh $REPOSITORIES \
   && /usr/local/bin/fix-permissions.sh $NEXUS_HOME/conf
 
 VOLUME ${NEXUS_DATA}
-VOLUME ${REPOSITORIES}
 
 USER nexus
 WORKDIR $NEXUS_HOME
