@@ -1,8 +1,8 @@
-# sonatype/docker-nexus:oss with activated https:// access
+# sonatype/nexus3 with activated https:// access
 
-Docker image for Sonatype Nexus OSS with activated https:// access and automated redirect to https:// if using http://
+Docker image for Sonatype Nexus3 OSS with activated https:// access and automated redirect to https:// if using http://
 
-This image is based on sonatype/nexus:oss
+This image is based on sonatype/nexus3
 
 To build:
 ```
@@ -10,6 +10,8 @@ To build:
 ```
 
 To run with port 8081 (http) and 8443 (https) and keystore file located under /etc/ssl/nexus/nexus-keystore.jks:
+
+# ToDO: Update all the following content as it comes from Nexus2!
 
 ```
 # docker run -d -p 8081:8081 -p 8443:8443 --name nexus -v /etc/ssl/nexus/:/etc/ssl/nexus/ <id>
