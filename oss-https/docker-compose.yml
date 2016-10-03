@@ -1,12 +1,18 @@
-version: "1"
+version: "2"
 
 services:
   nexus:
     image: gitlab.ti8m.ch:5043/ti8m-forge-internal/docker-nexus3
+    restart: unless-stopped
     volumes:
-      - "nexus-data:/nexus-data"
+      - /etc/ssl/nexus/:/etc/ssl/nexus/
+      - /sonatype-work/nexus-data:/nexus-data
     ports:
-      - "8081:8081"
-  
-volumes:
-  nexus-data: {}
+      - "80:8081"
+      - "443:8443"
+      - "8443:8443"
+    dns:
+      - "10.10.10.10"
+    extra_hosts:
+      - "ldap.ti8m.ch:10.10.10.10"
+      - "mail.ti8m.ch:10.10.10.20"
