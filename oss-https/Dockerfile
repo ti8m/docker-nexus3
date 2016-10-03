@@ -16,6 +16,9 @@ RUN sed -e "s#\(nexus-args=.*$\)#\1,\${karaf.etc}/jetty-https.xml,\${karaf.etc}/
         -e 's#\(<Set name="KeyManagerPassword">\)\(.*\)\(</Set>\)#\1OBF:1r2x1xfn1oio1u9l1wn31u9x1oke1xff1r51\3#g' \
     	-i /opt/sonatype/nexus/etc/jetty-https.xml
 
+RUN mkdir /nexus-data \
+ && chown -R nexus:nexus /nexus-data
+
 # Switch back to user nexus
 USER nexus
 
