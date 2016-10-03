@@ -12,7 +12,7 @@ RUN sed -e "\$aapplication-port-ssl=8443" -e "s#\(nexus-args=.*$\)#\1,\${karaf.e
         -e 's#\(<Set name="KeyStorePassword">\)\(.*\)\(</Set>\)#\1changeit\3#g' \
         -e 's#\(<Set name="TrustStorePassword">\)\(.*\)\(</Set>\)#\1changeit\3#g' \
         -e 's#\(<Set name="KeyManagerPassword">\)\(.*\)\(</Set>\)#\1changeit\3#g' \
-    	-i jetty-https.xml
+    	-i /opt/sonatype/nexus/etc/jetty-https.xml
 
 # Switch back to user nexus
 USER nexus
