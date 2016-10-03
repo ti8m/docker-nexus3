@@ -5,8 +5,8 @@ services:
     image: gitlab.ti8m.ch:5043/ti8m-forge-internal/docker-nexus3
     restart: unless-stopped
     volumes:
-      - /etc/ssl/nexus/:/etc/ssl/nexus/
-      - /sonatype-work/nexus-data:/nexus-data
+      - "/etc/ssl/nexus/:/etc/ssl/nexus/"
+      - "/nexus-data:/nexus-data:z"
     ports:
       - "80:8081"
       - "443:8443"
