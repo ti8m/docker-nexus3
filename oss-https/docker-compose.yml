@@ -6,7 +6,7 @@ services:
     restart: unless-stopped
     volumes:
       - "/etc/ssl/nexus/:/etc/ssl/nexus/"
-      - "/nexus-data:/nexus-data:z"
+      - "/nexus-data:/nexus-data:rw"
     ports:
       - "80:8081"
       - "443:8443"
