@@ -11,9 +11,9 @@ RUN sed -e "s#\(nexus-args=.*$\)#\1,\${karaf.etc}/jetty-https.xml,\${karaf.etc}/
         -i /opt/sonatype/nexus/etc/org.sonatype.nexus.cfg \
  && sed -e 's#\(<Set name="KeyStorePath">\)\(.*\)\(</Set>\)#\1/etc/ssl/nexus/nexus-keystore.jks\3#g' \
         -e 's#\(<Set name="TrustStorePath">\)\(.*\)\(</Set>\)#\1/etc/ssl/nexus/nexus-keystore.jks\3#g' \
-        -e 's#\(<Set name="KeyStorePassword">\)\(.*\)\(</Set>\)#\1changeit\3#g' \
-        -e 's#\(<Set name="TrustStorePassword">\)\(.*\)\(</Set>\)#\1changeit\3#g' \
-        -e 's#\(<Set name="KeyManagerPassword">\)\(.*\)\(</Set>\)#\1changeit\3#g' \
+        -e 's#\(<Set name="KeyStorePassword">\)\(.*\)\(</Set>\)#\1OBF:1r2x1xfn1oio1u9l1wn31u9x1oke1xff1r51\3#g' \
+        -e 's#\(<Set name="TrustStorePassword">\)\(.*\)\(</Set>\)#\1OBF:1r2x1xfn1oio1u9l1wn31u9x1oke1xff1r51\3#g' \
+        -e 's#\(<Set name="KeyManagerPassword">\)\(.*\)\(</Set>\)#\1OBF:1r2x1xfn1oio1u9l1wn31u9x1oke1xff1r51\3#g' \
     	-i /opt/sonatype/nexus/etc/jetty-https.xml
 
 # Switch back to user nexus
