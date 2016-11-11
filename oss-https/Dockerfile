@@ -1,4 +1,4 @@
-FROM       sonatype/nexus3:oss
+FROM       sonatype/nexus3
 MAINTAINER ti8m forge <forge@ti8m.ch>
 
 # Switch to user root and modify some files
