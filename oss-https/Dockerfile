@@ -16,6 +16,9 @@ RUN sed -e "s/\(nexus-args.*\)$/\1,\${jetty.etc}\/jetty-https.xml,\${jetty.etc}\
         -e 's#\(<Set name="KeyManagerPassword">\)\(.*\)\(</Set>\)#\1OBF:1r2x1xfn1oio1u9l1wn31u9x1oke1xff1r51\3#g' \
         -i ${NEXUS_HOME}/etc/jetty/jetty-https.xml
 
+# Fix wrong permissions on nexus home
+RUN chown -R nexus:nexus ${NEXUS_HOME}
+
 # Switch back to user nexus
 USER nexus
 
