@@ -44,19 +44,14 @@ $ docker logs -f nexus
 logs, and storage. This directory needs to be writable by the Nexus
 process, which runs as UID 200.
 
-* Three environment variables can be used to control the JVM arguments
+* There is an environment variable that can used to pass JVM arguments to the startup script
 
-  * `JAVA_MAX_MEM`, passed as -Xmx.  Defaults to `1200m`.
+  * `INSTALL4J_ADD_VM_PARAMS`, passed to the Install4J startup script. Defaults to `-Xms1200m -Xmx1200m`.
 
-  * `JAVA_MIN_MEM`, passed as -Xms.  Defaults to `1200m`.
-
-  * `EXTRA_JAVA_OPTS`.  Additional options can be passed to the JVM via
-  this variable.
-
-  These can be used supplied at runtime to control the JVM:
+  This can be supplied at runtime:
 
   ```
-  $ docker run -d -p 8081:8081 --name nexus -e JAVA_MAX_MEM=768m sonatype/nexus3
+  $ docker run -d -p 8081:8081 --name nexus -e INSTALL4J_ADD_VM_PARAMS="-Xms2g -Xmx2g" sonatype/nexus3
   ```
 
 * Another environment variable can be used to control the Nexus Context Path
@@ -108,6 +103,6 @@ docker build --rm --tag nexus-custom --build-arg NEXUS_VERSION=3.x.y --build-arg
 
 Looking to contribute to our Docker image but need some help? There's a few ways to get information or our attention:
 
-* File a public issue [here on GitHub](https://github.com/sonatype/docker-nexus3/issues)
+* File an issue [on our public JIRA](https://issues.sonatype.org/projects/NEXUS/)
 * Check out the [Nexus3](http://stackoverflow.com/questions/tagged/nexus3) tag on Stack Overflow
 * Check out the [Nexus Repository User List](https://groups.google.com/a/glists.sonatype.com/forum/?hl=en#!forum/nexus-users)
