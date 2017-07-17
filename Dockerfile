@@ -20,7 +20,7 @@ LABEL vendor=Sonatype \
   com.sonatype.license="Apache License, Version 2.0" \
   com.sonatype.name="Nexus Repository Manager base image"
 
-ARG NEXUS_VERSION=3.3.1-01
+ARG NEXUS_VERSION=3.4.0-02
 ARG NEXUS_DOWNLOAD_URL=https://download.sonatype.com/nexus/3/nexus-${NEXUS_VERSION}-unix.tar.gz
 
 RUN yum install -y \
@@ -30,8 +30,9 @@ RUN yum install -y \
 # configure java runtime
 ENV JAVA_HOME=/opt/java \
   JAVA_VERSION_MAJOR=8 \
-  JAVA_VERSION_MINOR=112 \
-  JAVA_VERSION_BUILD=15
+  JAVA_VERSION_MINOR=131 \
+  JAVA_VERSION_BUILD=11 \
+  JAVA_DOWNLOAD_HASH=d54c1d3a095b4ff2b6607d096fa80163
 
 # configure nexus runtime
 ENV SONATYPE_DIR=/opt/sonatype
@@ -44,7 +45,7 @@ ENV NEXUS_HOME=${SONATYPE_DIR}/nexus \
 RUN mkdir -p /opt \
   && curl --fail --silent --location --retry 3 \
   --header "Cookie: oraclelicense=accept-securebackup-cookie; " \
-  http://download.oracle.com/otn-pub/java/jdk/${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-b${JAVA_VERSION_BUILD}/server-jre-${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-linux-x64.tar.gz \
+  http://download.oracle.com/otn-pub/java/jdk/${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-b${JAVA_VERSION_BUILD}/${JAVA_DOWNLOAD_HASH}/server-jre-${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-linux-x64.tar.gz \
   | gunzip \
   | tar -x -C /opt \
   && ln -s /opt/jdk1.${JAVA_VERSION_MAJOR}.0_${JAVA_VERSION_MINOR} ${JAVA_HOME}
