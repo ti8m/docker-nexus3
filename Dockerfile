@@ -20,7 +20,7 @@ LABEL vendor=Sonatype \
   com.sonatype.license="Apache License, Version 2.0" \
   com.sonatype.name="Nexus Repository Manager base image"
 
-ARG NEXUS_VERSION=3.4.0-02
+ARG NEXUS_VERSION=3.5.1-02
 ARG NEXUS_DOWNLOAD_URL=https://download.sonatype.com/nexus/3/nexus-${NEXUS_VERSION}-unix.tar.gz
 
 RUN yum install -y \
@@ -30,9 +30,9 @@ RUN yum install -y \
 # configure java runtime
 ENV JAVA_HOME=/opt/java \
   JAVA_VERSION_MAJOR=8 \
-  JAVA_VERSION_MINOR=141 \
-  JAVA_VERSION_BUILD=15 \
-  JAVA_DOWNLOAD_HASH=336fa29ff2bb4ef291e347e091f7f4a7
+  JAVA_VERSION_MINOR=144 \
+  JAVA_VERSION_BUILD=01 \
+  JAVA_DOWNLOAD_HASH=090f390dda5b47b9b721c7dfaa008135
 
 # configure nexus runtime
 ENV SONATYPE_DIR=/opt/sonatype
@@ -65,6 +65,7 @@ RUN sed \
   && sed \
     -e '/^-Xms/d' \
     -e '/^-Xmx/d' \
+    -e '/^-XX:MaxDirectMemorySize/d' \
     -i ${NEXUS_HOME}/bin/nexus.vmoptions
 
 RUN useradd -r -u 200 -m -c "nexus role account" -d ${NEXUS_DATA} -s /bin/false nexus \
@@ -78,6 +79,6 @@ EXPOSE 8081
 USER nexus
 WORKDIR ${NEXUS_HOME}
 
-ENV INSTALL4J_ADD_VM_PARAMS="-Xms1200m -Xmx1200m"
+ENV INSTALL4J_ADD_VM_PARAMS="-Xms1200m -Xmx1200m -XX:MaxDirectMemorySize=2g"
 
 CMD ["bin/nexus", "run"]
