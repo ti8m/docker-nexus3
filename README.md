@@ -34,7 +34,7 @@ A Dockerfile for Sonatype Nexus Repository Manager 3, based on CentOS.
 
 ## Contribution Guidelines
 
-Go read [our contribution guidelines](/.github/CONTRIBUTING.md) to get a bit more familiar with how
+Go read [our contribution guidelines](https://github.com/sonatype/docker-nexus3/blob/master/.github/CONTRIBUTING.md) to get a bit more familiar with how
 we would like things to flow.
 
 ## Running
@@ -81,11 +81,15 @@ We are using `rspec` as the test framework. `serverspec` provides a docker backe
 
 ## Red Hat Certified Image
 
-A Red Hat certified container image can be created using `Dockerfile.rh.el` which is built to be compliant with Red Had certification.
+A Red Hat certified container image can be created using `Dockerfile.rh.el` which is built to be compliant with Red Hat certification.
 The image includes additional meta data to comform with Kubernetes and OpenShift standards, a directory with the
 licenses applicable to the software and a man file for help on how to use the software. It also uses an ENTRYPOINT
 script the ensure the running user has access to the appropriate permissions for OpenShift 'restricted' SCC. In addition to the
 Red Hat Enterprise Linux image, `Dockerfile.rh.centos` provides the same additions but with a CentOS base.
+
+The Red Hat certified container image is available from the 
+[Red Hat Container Catalog](https://access.redhat.com/containers/#/registry.connect.redhat.com/sonatype/nexus-repository-manager)
+and qualified accounts can pull it from registry.connect.redhat.com.
 
 ## Notes
 
@@ -133,8 +137,7 @@ There are two general approaches to handling persistent storage requirements
 with Docker. See [Managing Data in Containers](https://docs.docker.com/engine/tutorials/dockervolumes/)
 for additional information.
 
-  1. *Use a data volume*.  Since data volumes are persistent
-  until no containers use them, a volume can be created specifically for
+  1. *Use a docker volume*.  Since docker volumes are persistent, a volume can be created specifically for
   this purpose.  This is the recommended approach.  
 
   ```
