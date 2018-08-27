@@ -20,6 +20,13 @@ RUN sed -e "s/\(nexus-args.*\)$/\1,\${jetty.etc}\/jetty-https.xml,\${jetty.etc}\
 # Fix wrong permissions on nexus home
 RUN chown -R nexus:nexus ${NEXUS_HOME}
 
+RUN yum update -y \
+ && yum install -y \
+        python \
+        mc \
+        git
+RUN git clone https://github.com/jfrog/nexus2artifactory.git
+
 # Switch back to user nexus
 USER nexus
 
