@@ -20,14 +20,9 @@ LABEL vendor=Sonatype \
       com.sonatype.license="Apache License, Version 2.0" \
       com.sonatype.name="Nexus Repository Manager base image"
 
-ARG NEXUS_VERSION=3.13.0-01
+ARG NEXUS_VERSION=3.17.0-01
 ARG NEXUS_DOWNLOAD_URL=https://download.sonatype.com/nexus/3/nexus-${NEXUS_VERSION}-unix.tar.gz
-ARG NEXUS_DOWNLOAD_SHA256_HASH=5d1890f45e95e2ca74e62247be6b439482d2fe4562a7ec8ae905c4bdba6954ce
-
-ARG JAVA_URL=http://download.oracle.com/otn-pub/java/jdk/8u181-b13/96a7b8442fe848ef90c96a2fad6ed6d1/server-jre-8u181-linux-x64.tar.gz
-ARG JAVA_DOWNLOAD_SHA256_HASH=0b26c7fcfad20029e6e0989e678efcd4a81f0fe502a478b4972215533867de1b
-
-ENV JAVA_HOME=/opt/java
+ARG NEXUS_DOWNLOAD_SHA256_HASH=15c452a0380e7aefd17c3596b3357be3f4e85bf2074a53abd79e12f3bc304150
 
 # configure nexus runtime
 ENV SONATYPE_DIR=/opt/sonatype
@@ -37,13 +32,14 @@ ENV NEXUS_HOME=${SONATYPE_DIR}/nexus \
     SONATYPE_WORK=${SONATYPE_DIR}/sonatype-work \
     DOCKER_TYPE='docker'
 
-ARG NEXUS_REPOSITORY_MANAGER_COOKBOOK_VERSION="release-0.5.20180717-185554.2346ca8"
+ARG NEXUS_REPOSITORY_MANAGER_COOKBOOK_VERSION="release-0.5.20190212-155606.d1afdfe"
 ARG NEXUS_REPOSITORY_MANAGER_COOKBOOK_URL="https://github.com/sonatype/chef-nexus-repository-manager/releases/download/${NEXUS_REPOSITORY_MANAGER_COOKBOOK_VERSION}/chef-nexus-repository-manager.tar.gz"
 
 ADD solo.json.erb /var/chef/solo.json.erb
 
 # Install using chef-solo
-RUN curl -L https://www.getchef.com/chef/install.sh | bash \
+# Chef version locked to avoid needing to accept the EULA on behalf of whomever builds the image
+RUN curl -L https://www.getchef.com/chef/install.sh | bash -s -- -v 14.12.9 \
     && /opt/chef/embedded/bin/erb /var/chef/solo.json.erb > /var/chef/solo.json \
     && chef-solo \
        --recipe-url ${NEXUS_REPOSITORY_MANAGER_COOKBOOK_URL} \
