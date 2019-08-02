@@ -30,7 +30,7 @@ RUN git clone https://github.com/jfrog/nexus2artifactory.git
 # Switch back to user nexus
 USER nexus
 
-ENV INSTALL4J_ADD_VM_PARAMS="-d64 -server -Xms5G -Xmx5G -XX:MaxDirectMemorySize=2g -Djava.util.prefs.userRoot=${NEXUS_DATA}/javaprefs"
+ENV INSTALL4J_ADD_VM_PARAMS="-d64 -server -Xms30G -Xmx30G -XX:MaxDirectMemorySize=2g -Djava.util.prefs.userRoot=${NEXUS_DATA}/javaprefs"
 
 # Setup mount point for keystore location
 ENV NEXUS_KEYSTORE /etc/ssl/nexus
