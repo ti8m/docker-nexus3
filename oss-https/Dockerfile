@@ -24,7 +24,7 @@ RUN dnf update -y \
  && dnf install -y \
         python2 \
         git \
- && dnf clean
+ && dnf clean all
 RUN git clone https://github.com/jfrog/nexus2artifactory.git
 
 # Switch back to user nexus
