@@ -20,7 +20,7 @@
 
 [![Join the chat at https://gitter.im/sonatype/nexus-developers](https://badges.gitter.im/sonatype/nexus-developers.svg)](https://gitter.im/sonatype/nexus-developers?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-A Dockerfile for Sonatype Nexus Repository Manager 3, based on CentOS.
+A Dockerfile for Sonatype Nexus Repository Manager 3, starting with 3.18 the image is based on the [Red Hat Universal Base Image](https://www.redhat.com/en/blog/introducing-red-hat-universal-base-image) while earlier versions used CentOS.
 
 * [Contribution Guidlines](#contribution-guidelines)
 * [Running](#running)
@@ -39,7 +39,7 @@ we would like things to flow.
 
 ## Running
 
-To run, binding the exposed port 8081 to the host.
+To run, binding the exposed port 8081 to the host, use:
 
 ```
 $ docker run -d -p 8081:8081 --name nexus sonatype/nexus3
@@ -48,7 +48,7 @@ $ docker run -d -p 8081:8081 --name nexus sonatype/nexus3
 To test:
 
 ```
-$ curl -u admin:admin123 http://localhost:8081/service/metrics/ping
+$ curl http://localhost:8081/
 ```
 
 ## Building the Nexus Repository Manager image
@@ -93,7 +93,8 @@ and qualified accounts can pull it from registry.connect.redhat.com.
 
 ## Notes
 
-* Default credentials are: `admin` / `admin123`
+* Our [system requirements](https://help.sonatype.com/display/NXRM3/System+Requirements) should be taken into account when provisioning the Docker container.
+* Default user is `admin` and the uniquely generated password can be found in the `admin.password` file inside the volume. See [Persistent Data](#user-content-persistent-data) for information about the volume.
 
 * It can take some time (2-3 minutes) for the service to launch in a
 new container.  You can tail the log to determine once Nexus is ready:
