@@ -22,7 +22,7 @@ RUN chown -R nexus:nexus ${NEXUS_HOME}
 
 RUN yum update -y \
  && yum install -y \
-        python \
+        python2 \
         mc \
         git
 RUN git clone https://github.com/jfrog/nexus2artifactory.git
